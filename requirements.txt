@@ -1,0 +1,10 @@
+openai>=1.40
+websockets>=13.0
+send2trash>=1.8
+Pillow>=10.0
+ddgs>=9.0
+python-xlib>=0.33; sys_platform == "linux"
+faster-whisper>=1.0
+sounddevice>=0.4
+piper-tts>=1.3
+numpy

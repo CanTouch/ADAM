@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Adam Bridge",
+  "version": "1.0",
+  "description": "Lets Adam, your local computer agent, use this Chrome.",
+  "permissions": ["tabs", "scripting", "alarms", "tabGroups"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" }
+}

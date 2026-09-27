@@ -1,0 +1,8 @@
+# Secrets: never saved in the history
+config.json
+extension/config.js
+
+# Rebuilt or personal, not source
+.venv/
+__pycache__/
+adam_error.txt
