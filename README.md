@@ -51,6 +51,14 @@ Answer by typing `y` or `n`, or press Super+A and say "yes" or "no". Everything 
 
 Tell Adam "remember that..." and it keeps that fact across restarts. Tell it "forget ..." to remove a fact. The memory is a plain text file you can read or edit yourself: `~/AgentSandbox/memory.md`.
 
+## Recording the screen
+
+Say or type "start recording" and Adam records the whole screen, with sound, using OBS Studio. Say "stop recording" and Adam tells you where the video was saved (your home folder, named by date and time).
+
+- If OBS isn't open, Adam opens it quietly in the tray (the system-tray icon near the clock). On this computer that takes about 40 seconds the first time; after that, recording starts at once.
+- Adam makes its own OBS scene called **Adam Demo**. Your other OBS scenes are left alone.
+- Videos are 1280×720. To change that, open OBS, then Settings > Video.
+
 ## Where things are
 
 | What | Where |

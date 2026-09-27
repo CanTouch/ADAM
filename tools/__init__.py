@@ -1,5 +1,5 @@
 """Tool registry: name -> function, plus the schemas sent to the model."""
-from tools import browser, desktop, files, memory, vault, web
+from tools import browser, desktop, files, memory, recorder, vault, web
 
 FUNCTIONS = {
     "list_files": files.list_files,
@@ -25,6 +25,8 @@ FUNCTIONS = {
     "close_window": desktop.close_window,
     "remember": memory.remember,
     "forget": memory.forget,
+    "start_recording": recorder.start_recording,
+    "stop_recording": recorder.stop_recording,
 }
 
 
@@ -79,4 +81,6 @@ SCHEMAS = [
     _tool("remember", "Save a lasting fact about the user to your memory, kept across restarts.",
           fact="One short fact, e.g. 'Prefers dark mode' or 'Works at KuppeLabs'"),
     _tool("forget", "Remove remembered facts that contain this text.", text="Text to match"),
+    _tool("start_recording", "Start recording the whole screen with OBS Studio (opens OBS if needed)."),
+    _tool("stop_recording", "Stop the OBS screen recording and say where the video was saved."),
 ]
