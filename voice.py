@@ -16,8 +16,8 @@ from config import VOICES_DIR, save_setting
 RATE = 16000
 BLOCK = RATE // 10          # 0.1 s of audio per block
 WAIT_FOR_SPEECH = 6.0       # seconds to wait for the user to start talking
-END_SILENCE = 1.0           # this much quiet after speech ends the recording
-MAX_SECONDS = 15
+END_SILENCE = 6.0           # this much quiet after speech ends the recording (room to pause and think)
+MAX_SECONDS = 120           # hard cap; press the mic or Super+A again to finish sooner
 MIN_THRESHOLD = 400         # int16 RMS; room noise here measured 100-400
 WHISPER_MODEL = "base"
 VOICE_NAME = "en_US-lessac-medium"
@@ -38,6 +38,7 @@ class Voice:
         self._speak_lock = threading.Lock()
         self.listening = False
         self.level = 0.0  # loudness of the microphone while listening, 0..1
+        self._finish = threading.Event()
 
     # ---- ears ----
 
@@ -50,6 +51,7 @@ class Voice:
     def listen(self):
         """Record one utterance and return its text ('' if nothing was said). Blocks."""
         import sounddevice as sd
+        self._finish.clear()
         self.listening = True
         # Load the model while recording, so the first use isn't slower to start.
         threading.Thread(target=self._load_whisper, daemon=True).start()
@@ -65,6 +67,10 @@ class Voice:
         segments, _ = self._whisper.transcribe(audio, language="en", beam_size=1, vad_filter=True)
         return " ".join(s.text.strip() for s in segments).strip()
 
+    def finish_listening(self):
+        """End the current recording now instead of waiting for silence."""
+        self._finish.set()
+
     def _record(self, sd):
         blocks, started, quiet = [], False, 0
         with sd.InputStream(samplerate=RATE, channels=1, dtype="int16", blocksize=BLOCK) as stream:
@@ -72,6 +78,10 @@ class Voice:
             threshold = max(2.5 * statistics.median(noise), MIN_THRESHOLD)
             loud_run = 0
             for i in range(int(MAX_SECONDS * 10)):
+                if self._finish.is_set():
+                    if not started:
+                        return None
+                    break
                 block = stream.read(BLOCK)[0][:, 0]
                 blocks.append(block)
                 level = _rms(block)

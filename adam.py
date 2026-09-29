@@ -85,7 +85,8 @@ def main():
     def listen_now():
         """UI thread: record in the background and submit what was said. The window stays put."""
         voice.stop_speaking()
-        if voice.listening:
+        if voice.listening:  # pressed again: the user is done talking
+            voice.finish_listening()
             return
         window.notify("Adam is listening...")
 

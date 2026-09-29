@@ -257,7 +257,7 @@ class AdamWindow:
         self._ph.bind("<Button-1>", lambda e: self.entry.focus_set())
         self._placeholder()
 
-        self.mic = IconButton(bar, self, "mic", self._on_mic, "Talk to Adam (same as Super+A)")
+        self.mic = IconButton(bar, self, "mic", self._on_mic, "Talk to Adam (same as Super+A); press again when you're done")
         self.speaker = IconButton(bar, self, "speaker_on", self._on_speaker, "Spoken replies on or off")
         self.stop = IconButton(bar, self, "stop", self._on_stop, "Stop what Adam is doing or saying")
         for b in (self.stop, self.speaker, self.mic):
